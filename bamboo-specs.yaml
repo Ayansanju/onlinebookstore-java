@@ -8,7 +8,7 @@ plan:
 variables:
   CLIENT_ID: '${bamboo.CLIENT_ID}'
   CLIENT_SECRET: '${bamboo.CLIENT_SECRET}'
-  APPLICATION_ID: 'YOUR_APPLICATION_ID'
+  APPLICATION_ID: '67445a94043fa1dc91b0db4b'
 
 stages:
   - Security Scans:
@@ -27,7 +27,7 @@ SAST Scan:
             -F "projectZipFile=@project.zip" \
             -F "applicationId=$APPLICATION_ID" \
             -F "scanName=SAST Scan - ${bamboo.buildNumber}" \
-            -F "language=javascript" \
+            -F "language=java" \
             https://appsecops-api.intruceptlabs.com/api/v1/integrations/sast-scans)
           
           CAN_PROCEED=$(echo $RESPONSE | jq -r '.canProceed')
@@ -54,7 +54,7 @@ SCA Scan:
             -F "projectZipFile=@project.zip" \
             -F "applicationId=$APPLICATION_ID" \
             -F "scanName=SCA Scan - ${bamboo.buildNumber}" \
-            -F "language=javascript" \
+            -F "language=java" \
             https://appsecops-api.intruceptlabs.com/api/v1/integrations/sca-scans)
           
           CAN_PROCEED=$(echo $RESPONSE | jq -r '.canProceed')
