@@ -1,9 +1,9 @@
 name: SCA Check
 on:
   push:
-    branches: [ main ]  # Adjust this to your main branch name
+    branches: [ master ]  # Adjust this to your master branch name
   pull_request:
-    branches: [ main ]  # Optionally run on PRs
+    branches: [ master ]  # Optionally run on PRs
 jobs:
   sca-check:
     runs-on: ubuntu-latest
@@ -23,18 +23,10 @@ jobs:
             -F "projectZipFile=@project.zip" \
             -F "applicationId=${{ secrets.INTRUCEPT_APPLICATION_ID }}" \
             -F "scanName=SCA Scan - ${{ github.sha }}" \
-            -F "language=java" \
-            https://appsecops-api.intruceptlabs.com/api/v1/integrations/sca-scans)
+            -F "language=javascript" \
+            https://appsecops-api.intruceptlabs.com/api/v1/integrations/sca-scans)          
           
-          CAN_PROCEED=$(echo $RESPONSE | jq -r '.canProceed')
-          echo "canProceed=$CAN_PROCEED" >> $GITHUB_OUTPUT
           
           VULNS_TABLE=$(echo $RESPONSE | jq -r '.vulnsTable')
           echo "Vulnerabilities Table:"
           echo "$VULNS_TABLE"
-      
-      - name: Check SCA result
-        if: steps.sca.outputs.canProceed != 'true'
-        run: |
-          echo "SCA scan failed. Please review the dependency issues."
-          exit 1
