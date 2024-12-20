@@ -23,7 +23,6 @@ jobs:
             -F "projectZipFile=@project.zip" \
             -F "applicationId=${{ secrets.INTRUCEPT_APPLICATION_ID }}" \
             -F "scanName=SAST Scan - ${{ github.sha }}" \
-            -F "language=javascript" \
             https://appsecops-api.intruceptlabs.com/api/v1/integrations/sast-scans)          
           
           
