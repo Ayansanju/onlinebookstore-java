@@ -1,9 +1,9 @@
 name: SCA Check
 on:
   push:
-    branches: [ master ]  # Adjust this to your master branch name
+    branches: [ main ]  # Adjust this to your master branch name
   pull_request:
-    branches: [ master ]  # Optionally run on PRs
+    branches: [ main ]  # Optionally run on PRs
 jobs:
   sca-check:
     runs-on: ubuntu-latest
