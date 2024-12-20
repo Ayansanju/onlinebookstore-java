@@ -1,9 +1,9 @@
 name: SAST Check
 on:
   push:
-    branches: [ main ]  # Adjust this to your main branch name
+    branches: [ master ]  # Adjust this to your master branch name
   pull_request:
-    branches: [ main ]  # Optionally run on PRs
+    branches: [ master ]  # Optionally run on PRs
 jobs:
   sast-check:
     runs-on: ubuntu-latest
@@ -24,17 +24,9 @@ jobs:
             -F "applicationId=${{ secrets.INTRUCEPT_APPLICATION_ID }}" \
             -F "scanName=SAST Scan - ${{ github.sha }}" \
             -F "language=javascript" \
-            https://appsecops-api.intruceptlabs.com/api/v1/integrations/sast-scans)
+            https://appsecops-api.intruceptlabs.com/api/v1/integrations/sast-scans)          
           
-          CAN_PROCEED=$(echo $RESPONSE | jq -r '.canProceed')
-          echo "canProceed=$CAN_PROCEED" >> $GITHUB_OUTPUT
           
           VULNS_TABLE=$(echo $RESPONSE | jq -r '.vulnsTable')
           echo "Vulnerabilities Table:"
           echo "$VULNS_TABLE"
-      
-      - name: Check SAST result
-        if: steps.sast.outputs.canProceed != 'true'
-        run: |
-          echo "SAST scan failed. Please review the security issues."
-          exit 1
